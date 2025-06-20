@@ -1,7 +1,22 @@
-import React from 'react';
-import { TrendingUp, Users, Bus, CreditCard, Calendar, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { TrendingUp, Users, Bus, CreditCard, Calendar, AlertCircle, Plus, FileText, UserPlus, Route } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { useLanguage } from '../../context/LanguageContext';
+
+// Modals
+import { NewTripModal } from './modals/NewTripModal';
+import { NewBusModal } from './modals/NewBusModal';
+import { NewEmployeeModal } from './modals/NewEmployeeModal';
+import { NewRouteModal } from './modals/NewRouteModal';
 
 export function AdminOverview() {
+  const { theme } = useTheme();
+  const { t } = useLanguage();
+  const [showNewTripModal, setShowNewTripModal] = useState(false);
+  const [showNewBusModal, setShowNewBusModal] = useState(false);
+  const [showNewEmployeeModal, setShowNewEmployeeModal] = useState(false);
+  const [showNewRouteModal, setShowNewRouteModal] = useState(false);
+
   const stats = [
     {
       name: 'Ventas del día',
@@ -78,11 +93,44 @@ export function AdminOverview() {
     },
   ];
 
+  const quickActions = [
+    {
+      title: 'Nuevo Viaje',
+      description: 'Programar un nuevo viaje',
+      icon: Calendar,
+      color: 'bg-blue-500 hover:bg-blue-600',
+      action: () => setShowNewTripModal(true)
+    },
+    {
+      title: 'Registrar Bus',
+      description: 'Añadir nuevo bus a la flota',
+      icon: Bus,
+      color: 'bg-green-500 hover:bg-green-600',
+      action: () => setShowNewBusModal(true)
+    },
+    {
+      title: 'Nuevo Empleado',
+      description: 'Registrar nuevo empleado',
+      icon: UserPlus,
+      color: 'bg-purple-500 hover:bg-purple-600',
+      action: () => setShowNewEmployeeModal(true)
+    },
+    {
+      title: 'Nueva Ruta',
+      description: 'Crear nueva ruta de viaje',
+      icon: Route,
+      color: 'bg-orange-500 hover:bg-orange-600',
+      action: () => setShowNewRouteModal(true)
+    }
+  ];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="py-6">
-        <h1 className="text-2xl font-bold text-azul-oscuro">Dashboard</h1>
-        <p className="mt-1 text-sm text-gris-suave">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          {t('admin.dashboard')}
+        </h1>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
           Resumen general de operaciones
         </p>
       </div>
@@ -90,18 +138,20 @@ export function AdminOverview() {
       {/* Stats */}
       <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((item) => (
-          <div key={item.name} className="bg-white overflow-hidden shadow-lg rounded-lg">
-            <div className="p-5">
+          <div key={item.name} className="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+            <div className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <item.icon className="h-6 w-6 text-azul-oscuro" />
+                  <div className="w-12 h-12 bg-gradient-to-r from-azul-oscuro to-primary-600 rounded-xl flex items-center justify-center">
+                    <item.icon className="h-6 w-6 text-white" />
+                  </div>
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gris-suave truncate">
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
                       {item.name}
                     </dt>
-                    <dd className="text-lg font-medium text-azul-oscuro">
+                    <dd className="text-2xl font-bold text-gray-900 dark:text-white">
                       {item.value}
                     </dd>
                   </dl>
@@ -109,15 +159,15 @@ export function AdminOverview() {
               </div>
               <div className="mt-4">
                 <div className="flex items-center">
-                  <div className={`flex items-center text-sm ${
-                    item.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
+                  <div className={`flex items-center text-sm font-medium ${
+                    item.changeType === 'increase' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                   }`}>
                     <TrendingUp className={`h-4 w-4 mr-1 ${
                       item.changeType === 'decrease' ? 'rotate-180' : ''
                     }`} />
                     {item.change}
                   </div>
-                  <div className="ml-2 text-sm text-gris-suave">
+                  <div className="ml-2 text-sm text-gray-500 dark:text-gray-400">
                     vs. ayer
                   </div>
                 </div>
@@ -127,59 +177,84 @@ export function AdminOverview() {
         ))}
       </div>
 
+      {/* Quick Actions */}
+      <div className="mt-8">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6 flex items-center">
+            <Plus className="h-5 w-5 mr-2 text-amarillo-dorado" />
+            Acciones Rápidas
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {quickActions.map((action, index) => (
+              <button
+                key={index}
+                onClick={action.action}
+                className={`${action.color} text-white p-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group`}
+              >
+                <div className="flex flex-col items-center text-center">
+                  <action.icon className="h-8 w-8 mb-3 group-hover:scale-110 transition-transform" />
+                  <h4 className="font-semibold text-lg mb-1">{action.title}</h4>
+                  <p className="text-sm opacity-90">{action.description}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Bookings */}
-        <div className="bg-white shadow-lg rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-azul-oscuro">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
               Reservas Recientes
             </h3>
           </div>
           <div className="overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Pasajero
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Ruta
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Monto
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Estado
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {recentBookings.map((booking) => (
-                  <tr key={booking.id}>
+                  <tr key={booking.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-azul-oscuro">
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">
                         {booking.passenger}
                       </div>
-                      <div className="text-sm text-gris-suave">
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
                         {booking.id}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-azul-oscuro">
+                      <div className="text-sm text-gray-900 dark:text-white">
                         {booking.route}
                       </div>
-                      <div className="text-sm text-gris-suave">
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
                         {booking.departure}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-azul-oscuro">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
                       {booking.amount}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                         booking.status === 'Confirmado'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                          : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                       }`}>
                         {booking.status}
                       </span>
@@ -192,25 +267,25 @@ export function AdminOverview() {
         </div>
 
         {/* Alerts */}
-        <div className="bg-white shadow-lg rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-azul-oscuro">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
               Alertas y Notificaciones
             </h3>
           </div>
           <div className="p-6">
             <div className="space-y-4">
               {alerts.map((alert, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${
+                <div key={index} className="flex items-start space-x-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                  <div className={`flex-shrink-0 w-3 h-3 rounded-full mt-1 ${
                     alert.type === 'error' ? 'bg-red-500' :
                     alert.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
                   }`} />
                   <div className="flex-1">
-                    <p className="text-sm text-azul-oscuro">
+                    <p className="text-sm text-gray-900 dark:text-white font-medium">
                       {alert.message}
                     </p>
-                    <p className="text-xs text-gris-suave mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {alert.time}
                     </p>
                   </div>
@@ -221,28 +296,23 @@ export function AdminOverview() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="mt-8">
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h3 className="text-lg font-medium text-azul-oscuro mb-4">
-            Acciones Rápidas
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button className="bg-azul-oscuro text-white px-4 py-3 rounded-lg hover:bg-primary-600 transition-colors text-sm font-medium">
-              Nuevo Viaje
-            </button>
-            <button className="bg-amarillo-dorado text-azul-oscuro px-4 py-3 rounded-lg hover:bg-yellow-500 transition-colors text-sm font-medium">
-              Registrar Bus
-            </button>
-            <button className="border border-azul-oscuro text-azul-oscuro px-4 py-3 rounded-lg hover:bg-azul-oscuro hover:text-white transition-colors text-sm font-medium">
-              Ver Reportes
-            </button>
-            <button className="border border-gray-300 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
-              Configuración
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Modals */}
+      <NewTripModal 
+        isOpen={showNewTripModal} 
+        onClose={() => setShowNewTripModal(false)} 
+      />
+      <NewBusModal 
+        isOpen={showNewBusModal} 
+        onClose={() => setShowNewBusModal(false)} 
+      />
+      <NewEmployeeModal 
+        isOpen={showNewEmployeeModal} 
+        onClose={() => setShowNewEmployeeModal(false)} 
+      />
+      <NewRouteModal 
+        isOpen={showNewRouteModal} 
+        onClose={() => setShowNewRouteModal(false)} 
+      />
     </div>
   );
 }
