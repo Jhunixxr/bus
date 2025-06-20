@@ -1,0 +1,69 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sol -->
+  <g transform="translate(40, 25)">
+    <!-- Rayos del sol -->
+    <g stroke="#e3a518" stroke-width="3" stroke-linecap="round">
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(0)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(30)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(60)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(90)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(120)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(150)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(180)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(210)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(240)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(270)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(300)"/>
+      <line x1="0" y1="-20" x2="0" y2="-15" transform="rotate(330)"/>
+    </g>
+    <!-- Círculo del sol -->
+    <circle cx="0" cy="0" r="12" fill="#e3a518"/>
+  </g>
+
+  <!-- Ave -->
+  <g transform="translate(160, 20)">
+    <path d="M0,0 Q-5,-3 -8,0 Q-10,2 -8,5 Q-5,8 0,5 Q3,3 5,0 Q8,-2 12,-1 Q15,0 18,2 Q20,4 18,6 Q15,8 12,7 Q8,6 5,8 Q3,10 0,8 Q-3,6 -5,8 Q-8,10 -10,8 Q-12,6 -10,4 Q-8,2 -5,0" fill="#e3a518"/>
+    <circle cx="-6" cy="2" r="1" fill="white"/>
+  </g>
+
+  <!-- Bus -->
+  <g transform="translate(20, 45)">
+    <!-- Cuerpo principal del bus -->
+    <rect x="0" y="0" width="120" height="35" rx="8" fill="#0d2c4e"/>
+    <rect x="5" y="5" width="110" height="25" rx="5" fill="white"/>
+    
+    <!-- Ventanas -->
+    <rect x="10" y="8" width="15" height="8" rx="2" fill="#0d2c4e"/>
+    <rect x="28" y="8" width="15" height="8" rx="2" fill="#0d2c4e"/>
+    <rect x="46" y="8" width="15" height="8" rx="2" fill="#0d2c4e"/>
+    <rect x="64" y="8" width="15" height="8" rx="2" fill="#0d2c4e"/>
+    <rect x="82" y="8" width="15" height="8" rx="2" fill="#0d2c4e"/>
+    <rect x="100" y="8" width="10" height="8" rx="2" fill="#0d2c4e"/>
+    
+    <!-- Parabrisas delantero -->
+    <rect x="115" y="5" width="8" height="25" rx="3" fill="#0d2c4e"/>
+    
+    <!-- Ruedas -->
+    <circle cx="25" cy="40" r="8" fill="#0d2c4e"/>
+    <circle cx="25" cy="40" r="5" fill="#e3a518"/>
+    <circle cx="95" cy="40" r="8" fill="#0d2c4e"/>
+    <circle cx="95" cy="40" r="5" fill="#e3a518"/>
+    
+    <!-- Detalles -->
+    <rect x="0" y="20" width="120" height="3" fill="#e3a518"/>
+    <rect x="115" y="15" width="8" height="2" fill="#e3a518"/>
+    
+    <!-- Líneas de velocidad -->
+    <g stroke="#0d2c4e" stroke-width="2" opacity="0.3">
+      <line x1="-5" y1="10" x2="-15" y2="10"/>
+      <line x1="-3" y1="15" x2="-13" y2="15"/>
+      <line x1="-5" y1="20" x2="-15" y2="20"/>
+      <line x1="-3" y1="25" x2="-13" y2="25"/>
+    </g>
+  </g>
+
+  <!-- Texto NORTEEXPRESO -->
+  <text x="100" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="24">
+    <tspan fill="#0d2c4e">NORTE</tspan><tspan fill="#e3a518">EXPRESO</tspan>
+  </text>
+</svg>
